@@ -14,4 +14,13 @@ module.exports = {
             template: "./src/template.html",
         }),
     ],
+    module: {
+    rules: [
+        {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+        },
+        ],
+    },
+    watchOptions: { ignored: /node_modules/ },
 };
