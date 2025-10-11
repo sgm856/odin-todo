@@ -8,6 +8,8 @@
 </head>
 
 <body>
+
+<!--For later reference: svg sprite allowing for reuse, define once as symbol with id, use with xlink and id-->
 <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <defs>
 <symbol id="icon-timer-sand" viewBox="0 0 32 32">
@@ -46,20 +48,85 @@
 </defs>
 </svg>
     <div class="content">
-        <nav class="sidebar">
-            <ul class="sidebar-utils">
+        <dialog id="project-dialog">
+            <h2 class="modal-header">Add New Project</h2>
+            <p class="dialog-instruction">Please complete all required * fields.</p>
+            <form>
+                <label for="title">Title*:</label>
+                <input id="title" name="title" type="text" min="1" max="120" required class="form-input">
+                <label for="description">Description:</label>
+                <input id="description" name="description" type="text" max="250" placeholder="" class="form-input">
+                <label for="notes">Notes:</label>
+                <input id="notes" name="notes" type="text" placeholder="" class="form-input">
+                <label for="tags">Tags:</label>
+                <input id="tags" name="tags" type="text" max="30" placeholder="" class="form-input">
+                <div class="checkbox-container">
+                    <label for="dumpTasks">Place Unassigned Tasks to this Project:</label>
+                    <input id="dumpTasks" name="dumpTasks" type="checkbox" class="checkbox">
+                </div>
+            </form>
+        </dialog>
+        <dialog id="task-dialog">
+            <h2 class="modal-header">Add New Task</h2>
+            <p class="dialog-instruction">Please complete all required * fields.</p>
+            <!--For later reference: forms submit data to url specified in action attribute. Method-->
+            <form action="" method="dialog">
+                <label for="title">Title*:</label>
+                <input id="title" name="title" type="text" min="1" max="120" required class="form-input">
+                <label for="description">Description:</label>
+                <input id="description" name="description" type="text" max="250" placeholder="" class="form-input">
+                <label for="date">Due Date:</label>
+                <input id="date" name="date" type="date" placeholder="" class="form-input">
+                <!--For later reference: always use fieldsets to group related options, use legend to add a title to the group-->
+                <fieldset>
+                    <legend>Select task priority</legend>
+                    <label for="lowPriority">Low Priority</label>
+                    <input type="radio" id="lowPriority" name="priority" value="low">
+                    <label for="medPriority">Medium Priority</label>
+                    <input type="radio" id="medPriority" name="priority" value="medium">
+                    <label for="lowPriority">High Priority</label>
+                    <input type="radio" id="highPriority" name="priority" value="high">
+                </fieldset>
+                <div class="checkbox-container">
+                    <label for="dumpTasks">Place Unassigned Tasks in this Project:</label>
+                    <input id="dumpTasks" name="dumpTasks" type="checkbox" class="checkbox">
+                </div>
+            </form>
+            <div class="modal-subtask-container"></div>
+            <div class="modal-tag-container"></div>
+        </dialog>
+        <dialog id="edit-modal" class="modal">
+            <form method="dialog">
+                <h2 id="modal-title">Edit Item</h2>
+                <div id="modal-fields"></div>
+            </form>
+        </dialog>
+        <div class="sidebar">
+            <div class="sidebar-utils">
                 <input type="search">
-                <li class="sidebar-task"><svg class="icon icon-plus-box-outline"><use xlink:href="#icon-plus-box-outline"></use></svg>Add task</li>
-                <li class="sidebar-task"><svg class="icon icon-calendar-today"><use xlink:href="#icon-calendar-today"></use></svg>Today</li>
-                <li class="sidebar-task"><svg class="icon icon-timer-sand"><use xlink:href="#icon-timer-sand"></use></svg>Upcoming</li>
-                <li class="sidebar-task"><svg class="icon icon-calendar"><use xlink:href="#icon-calendar-today"></use></svg>Calendar</li>
-            </ul>
-            <ul class="sidebar-projects">
-                <h2>Projects</h2>
-            </ul>
-        </nav>
+                <button class="sidebar-util add-task"><svg class="icon icon-plus-box-outline"><use xlink:href="#icon-plus-box-outline"></use></svg>Add task</button>
+                <button class="sidebar-util calendar-today"><svg class="icon icon-calendar-today"><use xlink:href="#icon-calendar-today"></use></svg>Today</button>
+                <button class="sidebar-util calendar-week"><svg class="icon icon-timer-sand"><use xlink:href="#icon-timer-sand"></use></svg>Upcoming</button>
+                <button class="sidebar-util calendar-month"><svg class="icon icon-calendar"><use xlink:href="#icon-calendar-today"></use></svg>Calendar</button>
+            </div>
+            <div class="sidebar-projects">
+                <div class="sidebar-header">
+                    <h2>Projects</h2>
+                </div>
+                <div class="sidebar-projects-container">
+                    <button class="sidebar-util add-project"><svg class="icon icon-plus-box-outline"><use xlink:href="#icon-plus-box-outline"></use></svg>Add Project</button>
+                    <ul class="sidebar-project-list">
+                        <li class="sidebar-project">Test Project</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
         <div class="main-content">
-            
+            <div class="tasks-container">
+                <ul class="todo-list">
+
+                </ul>
+            </div>
         </div>
         <footer>The Odin Project Todolist</footer>
     </div>

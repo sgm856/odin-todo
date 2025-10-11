@@ -382,33 +382,61 @@ html {
     display: flex;
     flex-direction: column;
     background-color: var(--light-color);
-    color: black;
+    align-items: center;
+    padding: 0;
+    margin: 0;
 }
 
-.sidebar-utils {
-    padding: 1rem;
-    padding-top: 3rem;
+.sidebar-header {
+    display: flex;
+    background-color: var(--card-color);
+    color: white;
+    border: solid 0.75rem var(--card-color);
+    padding-left: 2rem;
 }
 
-.sidebar-projects {
-    padding: 1rem;
+.siderbar-header h2 {
+    text-align: center;
 }
 
 .sidebar-utils,
-.sidebar-projects {
+.sidebar-projects,
+.sidebar-projects-container {
     display: flex;
     flex-direction: column;
-    list-style: none;
     gap: 1rem;
+    padding: 1rem;
+    padding-top: 3rem;
+    box-sizing: border-box;
+}
+
+.sidebar-projects-container {
+  padding-top: 1rem;
+}
+
+.sidebar-projects {
+    flex: 1;
+    width: 100%;
+    padding: 0;
+    padding-top: 4rem;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
 }
 
 /* Tasks are flex containers so the icons can be aligned to their corresponding text */
-.sidebar-task {
+.sidebar-util,
+.sidebar-project {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem;
     cursor: pointer;
+    background-color: var(--card-color);
+    border-radius: 1rem;
+    color: white;
 }
 
 /* ------------------------ Main content area styling ----------------------- */
@@ -435,4 +463,13 @@ footer {
     height: 1.5rem;
     width: 1.5rem;
     flex-shrink: 0;
+    fill: white;
+}
+
+button {
+    border: none;
+}
+
+ul {
+    list-style: none;
 }

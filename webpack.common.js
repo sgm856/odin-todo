@@ -20,6 +20,15 @@ module.exports = {
         test: /\.svg$/,
         loader: 'svg-inline-loader'
         },
+        {
+            test: /\.js$/,
+            exclude: [
+                /node_modules/,
+                /\.test.js%/,
+                /\.spec.js%/,
+                /__tests__/
+            ]
+        }
         ],
     },
     watchOptions: { ignored: /node_modules/ },
