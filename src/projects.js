@@ -1,13 +1,12 @@
 export class Project {
     static EDITABLE_PROPERTIES = ['title', 'description', 'notes', 'tags'];
-    constructor(title, description, notes, tags, tasks) {
+    constructor(title, description, notes, tags) {
         this._type = 'project';
         this.id = crypto.randomUUID();
         this.title = title;
         this.description = description;
         this.notes = notes;
         this.tags = tags;
-        this.tasks = tasks;
     }
 
     updateProject(id, updates) {
@@ -16,6 +15,10 @@ export class Project {
                 projects[id][key] = updates[key];
             }
         }
+    }
+
+    get id() {
+        return this.id;
     }
 
     static projectFromJSON(parsedJSONObject) {

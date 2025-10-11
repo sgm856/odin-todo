@@ -21,6 +21,10 @@ const attachUtilityButtonHandlers = function() {
 const addDialogFormButtons = function() {
     const formNodes = dom.getAllForms();
     for (const node of formNodes) {
-        dom.addFormButtonGroup(node);
+        dom.addFormButtonGroup(node, );
     }
+}
+
+const createTaskFromForm = function(formInfo) {
+    
 }

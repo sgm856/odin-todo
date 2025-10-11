@@ -80,16 +80,23 @@
                 <!--For later reference: always use fieldsets to group related options, use legend to add a title to the group-->
                 <fieldset>
                     <legend>Select task priority</legend>
-                    <label for="lowPriority">Low Priority</label>
-                    <input type="radio" id="lowPriority" name="priority" value="low">
+                    <label for="lowPriority">Normal Priority</label>
+                    <input required type="radio" id="lowPriority" name="priority" value="low" checked>
                     <label for="medPriority">Medium Priority</label>
-                    <input type="radio" id="medPriority" name="priority" value="medium">
+                    <input required type="radio" id="medPriority" name="priority" value="medium">
                     <label for="lowPriority">High Priority</label>
-                    <input type="radio" id="highPriority" name="priority" value="high">
+                    <input required type="radio" id="highPriority" name="priority" value="high">
                 </fieldset>
+                <label for="notes">Notes:</label>
+                <input id="notes" name="notes" type="text" max="30" placeholder="" class="form-input">
                 <div class="checkbox-container">
                     <label for="dumpTasks">Place Unassigned Tasks in this Project:</label>
                     <input id="dumpTasks" name="dumpTasks" type="checkbox" class="checkbox">
+                </div>
+                <div class="tags-container">
+                    <ul class="tags">
+
+                    </ul>
                 </div>
             </form>
             <div class="modal-subtask-container"></div>

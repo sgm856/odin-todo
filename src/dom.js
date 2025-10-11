@@ -1,5 +1,5 @@
 export const addTask = function (addedTask) {
-    const tasksList = document.querySelector('todo-list');
+    const projectTaskList = document.querySelector(`${projectId} .todo-list`);
     let task = document.createElement('li');
     task.setAttribute("data-id", addedTask.id);
     task.classList.add('task');
@@ -9,11 +9,11 @@ export const addTask = function (addedTask) {
     task.appendChild(svgNode);
     task.appendChild(titleNode);
     task.append(useNode);
-    tasksList.document.appendChild(task);
+    projectTaskList.document.appendChild(task);
 }
 
 export const addProject = function (addedProject) {
-    const projectsList = document.querySelector('sidebar-project-list');
+    const projectsList = document.querySelector('.sidebar-project-list');
     let project = document.createElement('li');
     project.setAttribute("data-id", addedProject.id);
     project.classList.add('project');
@@ -88,21 +88,26 @@ export const getAllForms = function() {
     return forms;
 }
 
+export const addHandler = function(element, callback) {
+    element.addEventListener('click', callback);
+}
+
+const addSubmitButtonHandler = function(button, form, submitCallback) {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        console.log(Object.fromEntries(formData));
+        //submitCallback(Object.fromEntries(formData));
+    });
+}
+
 const addCancelButtonHandler = function(button, dialog) {
     button.addEventListener('click', () => {
         dialog.close();
     });
 }
 
-export const addFormButtons = function() {
-    const formNodes = getAllForms();
-
-    for (const form of formNodes) {
-
-    }
-}
-
-export const addFormButtonGroup = function(form) {
+export const addFormButtonGroup = function(form, submitCallBack) {
     const div = document.createElement('div');
     const button1 = document.createElement('button');
     const button2 = document.createElement('button');
@@ -115,11 +120,30 @@ export const addFormButtonGroup = function(form) {
 
     const parentDialog = form.parentElement;
     addCancelButtonHandler(button1, parentDialog);
+    addSubmitButtonHandler(button2, form, submitCallBack);
 
     div.appendChild(button1);
     div.appendChild(button2);
     div.classList.add("form-buttons");
     form.appendChild(div);
+}
+
+export const getListItems = function(targetList) {
+    return document.querySelectorAll(`${targetList} li`);
+}
+
+export const addTagCollectionContainers = function(form) {
+    const container = document.createElement('div');
+    const button = document.createElement('button');
+    const tagList = document.createElement('ul');
+    
+    container.classList.add("tag-container");
+    button.classList.add("tag-btn");
+    tagList.classList.add("tag-list");
+
+    container.appendChild(button);
+    container.appendChild(tagList);
+    form.appendChild(container);
 }
 
 
