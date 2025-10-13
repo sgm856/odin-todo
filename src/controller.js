@@ -1,12 +1,30 @@
-import * as dom from "./dom.js";
-import * as projects from "./projects.js";
-import * as tasks from "./tasks.js";
+import * as projects from "./models/projects.js";
+import * as tasks from "./models/tasks.js";
 import * as storage from "./storage.js";
+
+import * as mainView from "./views/main.js";
+import * as modalView from "./views/modal.js";
+import * as sidebarView from "./views/sidebar.js";
 
 export const initializeApp = function () {
     storage.initialize();
     attachUtilityButtonHandlers();
     addDialogFormButtons();
+    checkDefaultProject();
+}
+
+/* -------------------------- Default Project Setup ------------------------- */
+
+const createDefaultProject = function() {
+    const defaultProject = new Project('Default', '', '', '');
+    dom.buildAndShowProjectSideTabComponent(defaultProject);
+    dom.buildAndShowProjectTodoComponent(defaultProject);
+}
+
+const checkDefaultProject = function() {
+    if (storage.getProjects().length === '0') {
+        createDefaultProject();
+    }
 }
 
 const attachUtilityButtonHandlers = function() {

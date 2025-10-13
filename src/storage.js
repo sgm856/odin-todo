@@ -1,9 +1,11 @@
-import {Task} from "./tasks.js";
-import {Project} from "./projects.js";
+import {Task} from "./models/tasks.js";
+import {Project} from "./models/projects.js";
 
 let projects = [];
 let tasks = [];
 let storageAvailable = false;
+
+/* ----------------- Just ensure local storage is available ----------------- */
 
 const checkStorageAvailable = function(type) {
   let storage;
@@ -25,6 +27,8 @@ const checkStorageAvailable = function(type) {
   }
 }
 
+/* ---------- Fetch Saved Data When Running App for the First Time ---------- */
+
 export const initialize = function() {
     if (checkStorageAvailable()) {
         tasks = getTasks() ?? [];
@@ -32,14 +36,11 @@ export const initialize = function() {
     }
 }
 
+/* - Store New Tasks and Projects Temporarily and then Add to Local Storage - */
+
 export const addTask = function(task) {
     tasks.push(task);
     storeTasks();
-    const associatedProjectId = task.project;
-    const associatedProject = projects.find( (proj) => {
-        return associatedProjectId === proj.id;
-    });
-    associatedProject.tasks.push(task);
     storeProjects();
 }
 
