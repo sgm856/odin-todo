@@ -64,6 +64,10 @@
                     <label for="dumpTasks">Place Unassigned Tasks to this Project:</label>
                     <input id="dumpTasks" name="dumpTasks" type="checkbox" class="checkbox">
                 </div>
+                <div class="form-buttons">
+                    <button class = "cancel-btn" type="button">Cancel</button>
+                    <button class ="save-btn" type="submit">Save</button>
+                </div>
             </form>
         </dialog>
         <dialog id="task-dialog">
@@ -89,14 +93,14 @@
                 </fieldset>
                 <label for="notes">Notes:</label>
                 <input id="notes" name="notes" type="text" max="30" placeholder="" class="form-input">
-                <div class="checkbox-container">
-                    <label for="dumpTasks">Place Unassigned Tasks in this Project:</label>
-                    <input id="dumpTasks" name="dumpTasks" type="checkbox" class="checkbox">
-                </div>
                 <div class="tags-container">
                     <ul class="tags">
 
                     </ul>
+                </div>
+                <div class="form-buttons">
+                    <button class = "cancel-btn" type="button">Cancel</button>
+                    <button class ="save-btn" type="submit">Save</button>
                 </div>
             </form>
             <div class="modal-subtask-container"></div>
@@ -106,17 +110,21 @@
             <form method="dialog">
                 <h2 id="modal-title">Edit Item</h2>
                 <div id="modal-fields"></div>
+                <div class="form-buttons">
+                    <button class = "cancel-btn" type="button">Cancel</button>
+                    <button class ="save-btn" type="submit">Save</button>
+                </div>
             </form>
         </dialog>
         <div class="sidebar">
-            <div class="sidebar-utils">
+            <div class="sidebar-top">
                 <input type="search">
                 <button class="sidebar-util add-task"><svg class="icon icon-plus-box-outline"><use xlink:href="#icon-plus-box-outline"></use></svg>Add task</button>
                 <button class="sidebar-util calendar-today"><svg class="icon icon-calendar-today"><use xlink:href="#icon-calendar-today"></use></svg>Today</button>
                 <button class="sidebar-util calendar-week"><svg class="icon icon-timer-sand"><use xlink:href="#icon-timer-sand"></use></svg>Upcoming</button>
                 <button class="sidebar-util calendar-month"><svg class="icon icon-calendar"><use xlink:href="#icon-calendar-today"></use></svg>Calendar</button>
             </div>
-            <div class="sidebar-projects">
+            <div class="sidebar-bottom">
                 <div class="sidebar-header">
                     <h2>Projects</h2>
                 </div>

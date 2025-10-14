@@ -4,11 +4,12 @@ const sidebarList = document.querySelector('.sidebar-project-list');
 
 export const renderProjectSidebarView = (projects) => {
     sidebarList.innerHTML = '';
-    projects.array.forEach(proj => {
+    projects.forEach(proj => {
         const tabContainer = document.createElement('div');
         const icon = createIcon("icon-circle-outline");
 
         const titleNode = document.createElement('h3');
+        titleNode.textContent = proj.title;
         tabContainer.appendChild(icon);
         tabContainer.appendChild(titleNode);
 

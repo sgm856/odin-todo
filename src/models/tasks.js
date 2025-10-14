@@ -1,6 +1,6 @@
 export class Task {
     static EDITABLE_PROPERTIES = ['project', 'title', 'description', 'dueDate', 'priority', 'checklist', 'notes', 'tags'];
-    constructor(id, projectId = 0, title, description="", dueDate, priority, checklist, notes, tags) {
+    constructor(title, description="", dueDate="", priority=0, checklist=[], notes="", tags=[], projectId = 0, id=null) {
         this._type = "task";
         this.complete = false;
         this.id = id ?? crypto.randomUUID();
@@ -23,9 +23,9 @@ export class Task {
     }
 
     static taskFromJSON(parsedJSONObject) {
-        const task = new Task(parsedJSONObject.id, parsedJSONObject.title, parsedJSONObject.description,
+        const task = new Task(parsedJSONObject.title, parsedJSONObject.description,
             parsedJSONObject.dueDate, parsedJSONObject.priority, parsedJSONObject.checklist,
-            parsedJSONObject.notes, parsedJSONObject.tags
+            parsedJSONObject.notes, parsedJSONObject.tags, parsedJSONObject.projectId, parsedJSONObject.id
         );
 
         return task;
@@ -34,9 +34,5 @@ export class Task {
     static retrieveValidProperties() {
         return this.EDITABLE_PROPERTIES;
     }
-}
-
-export const taskFromJSON = function(json) {
-    return new Task(json.id, json.title, json.description, json.dueDate, json.priority, json.checklist, json.notes, json.tags);
 }
 

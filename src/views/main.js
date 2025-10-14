@@ -1,7 +1,7 @@
 import {createIcon} from "../utils.js";
 
 const todoList = document.querySelector(".todo-list");
-const projectContainer = document.querySelector(".main-project-container");
+const projectContainer = document.querySelector(".project-container");
 
 const renderTask = function (addedTask) {
     let task = document.createElement('li');
@@ -31,6 +31,4 @@ export const renderProject = function (addedProject) {
 
     projectContainer.appendChild(icon);
     projectContainer.appendChild(titleNode);
-
-    project.appendChild(projectContainer);
 }

@@ -4,6 +4,7 @@ import {Project} from "./models/projects.js";
 let projects = [];
 let tasks = [];
 let storageAvailable = false;
+let activeProject;
 
 /* ----------------- Just ensure local storage is available ----------------- */
 
@@ -30,18 +31,18 @@ const checkStorageAvailable = function(type) {
 /* ---------- Fetch Saved Data When Running App for the First Time ---------- */
 
 export const initialize = function() {
-    if (checkStorageAvailable()) {
+    if (checkStorageAvailable("localStorage")) {
         tasks = getTasks() ?? [];
-        projects = getProjects ?? [];
+        projects = getProjects() ?? [];
+        activeProject = getActiveProject();
     }
 }
 
-/* - Store New Tasks and Projects Temporarily and then Add to Local Storage - */
+/* - Store New Tasks and Projects Temporarily anprojectId = 0, id=null, fromd then Add to Local Storage - */
 
 export const addTask = function(task) {
     tasks.push(task);
     storeTasks();
-    storeProjects();
 }
 
 export const addProject = function(project) {
@@ -49,37 +50,74 @@ export const addProject = function(project) {
     storeProjects();
 }
 
-export const storeTasks = function() {
+const storeTasks = function() {
     if (storageAvailable) {
         localStorage.setItem("tasks", JSON.stringify(tasks));
     }
 }
 
-export const storeProjects = function() {
+const storeProjects = function() {
     if (storageAvailable) {
         localStorage.setItem("projects", JSON.stringify(projects));
     }
 }
 
+export const saveActiveProjectId = function(activeProjectId) {
+    activeProject = activeProjectId;
+    if (storageAvailable) {
+        localStorage.setItem("active", activeProjectId);
+    }
+}
+
 export const getProjects = function() {
-    const projectInformation = JSON.parse(localStorage.getItem("projects"));
+    let projectInformation = JSON.parse(localStorage.getItem("projects"));
     if (projectInformation) {
-        projects = map(projectInformation, (project) => {
-            Project.projectFromJSON(project);
+        projectInformation = projectInformation.map((project) => {
+            return Project.projectFromJSON(project);
         });
+        projects = projectInformation;
     }
     return projects;
 }
 
 export const getTasks = function() {
     /* This will become an array */
-    const taskInformation = JSON.parse(localStorage.getItem("tasks"));
+    let taskInformation = JSON.parse(localStorage.getItem("tasks"));
     /* Turn them into task objects */
     if (taskInformation) {
-        tasks = map(taskInformation, (task) => {
-            Task.taskFromJSON(task);
+        taskInformation = taskInformation.map((task) => {
+            return Task.taskFromJSON(task);
         });
+        tasks = taskInformation;
     }
     return tasks;
+}
+
+export const getActiveProject = function() {
+    let activeProjectId = JSON.parse(localStorage.getItem("active"));
+    if (activeProjectId) {
+        const active = projects.find((proj) => {
+            if (proj.id === activeProjectId) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        return active;
+    } else if (projects.length > 0) {
+        return projects[0];
+    }
+    return null;
+}
+
+export const getActiveProjectTasks = function() {
+    let tasks = getTasks();
+    let activeTasks = tasks.filter((task) => {
+        if (task.project === activeProject) {
+            return true;
+        }
+        return false;
+    })
+    return activeTasks;
 }
 
