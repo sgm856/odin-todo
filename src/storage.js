@@ -4,7 +4,6 @@ import {Project} from "./models/projects.js";
 let projects = [];
 let tasks = [];
 let storageAvailable = false;
-let activeProject;
 
 /* ----------------- Just ensure local storage is available ----------------- */
 
@@ -34,7 +33,6 @@ export const initialize = function() {
     if (checkStorageAvailable("localStorage")) {
         tasks = getTasks() ?? [];
         projects = getProjects() ?? [];
-        activeProject = getActiveProject();
     }
 }
 
@@ -63,7 +61,6 @@ const storeProjects = function() {
 }
 
 export const saveActiveProjectId = function(activeProjectId) {
-    activeProject = activeProjectId;
     if (storageAvailable) {
         localStorage.setItem("active", activeProjectId);
     }
@@ -93,7 +90,7 @@ export const getTasks = function() {
     return tasks;
 }
 
-export const getActiveProject = function() {
+export const getStoredActiveProject = function() {
     let activeProjectId = JSON.parse(localStorage.getItem("active"));
     if (activeProjectId) {
         const active = projects.find((proj) => {
@@ -110,10 +107,10 @@ export const getActiveProject = function() {
     return null;
 }
 
-export const getActiveProjectTasks = function() {
+export const getStoredActiveProjectTasks = function() {
     let tasks = getTasks();
     let activeTasks = tasks.filter((task) => {
-        if (task.project === activeProject) {
+        if (task.project === getStoredActiveProject()) {
             return true;
         }
         return false;

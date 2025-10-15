@@ -12,6 +12,7 @@ export const initializeApp = function () {
     storage.initialize();
     attachSidebarHandlers();
     attachFormButtonHandlers();
+    attachProjectListTabsHandler();
     displayActiveProject();
     console.log(activeProject);
 }
@@ -29,10 +30,11 @@ const displayActiveProject = function() {
         activeProject = defProject;
         storage.saveActiveProjectId(defProject.id);
     } else if (!activeProject) {
-        activeProject = storage.getActiveProject();
+        activeProject = storage.getStoredActiveProject();
     }
     sidebarView.renderProjectSidebarView(storage.getProjects());
-    mainView.populateProjectWithTasksView(storage.getActiveProjectTasks());
+    mainView.renderProject(activeProject);
+    mainView.populateProjectWithTasksView(storage.getStoredActiveProjectTasks());
 }
 
 /* ----------------------- Sidebar EventHandler Setup ----------------------- */
@@ -91,7 +93,32 @@ const addFormButtonHandlers = function(form, closeCallBack, submitCallback) {
     })
 }
 
+const attachProjectListTabsHandler = function() {
+    sidebarView.getProjectListElementContainer().addEventListener("click",
+        (e) => {
+            if (e.target.matches("sidebar-project")) {
+                const id = e.target.projectId;
+                const project = storage.getProjects().find((proj) => proj.id === id);
+                mainView.renderProject(project);
+                const associatedTasks = storage.getTasks().filter((task) => {
+                    task.project === id;
+                });
+                mainView.populateProjectWithTasksView(associatedTasks);
+            }
+        } 
+    )
+}
+
 /* ------------------- Add Task/Project Callback Functions ------------------ */
+
+const handleProjectClick = function(button) {
+    button.addEventListener('click', (event) => {
+        const id = event.target.projectId;
+        const clickedProj = storage.getProjects().find((proj) => proj.id === id);
+        storage.saveActiveProjectId(clickedProj.id);
+        mainView.renderProject(clickedProj);
+    })
+}
 
 const handleProjectSubmission = function(data) {
     const projectRequest = new Project(data.title, data.description,
@@ -117,7 +144,7 @@ const setActiveProject = function(project) {
 
 const getActiveProject = function() {
     if (activeProject == null || activeProject == undefined) {
-        return storage.getActiveProject();
+        return storage.getStoredActiveProject();
     } 
     return activeProject;
 }

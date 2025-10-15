@@ -410,6 +410,10 @@ html {
     box-sizing: border-box;
 }
 
+.sidebar-top {
+  padding-bottom: 3rem;
+}
+
 .sidebar-projects-container {
   padding-top: 1rem;
 }
@@ -418,7 +422,7 @@ html {
     flex: 1;
     width: 100%;
     padding: 0;
-    padding-top: 4rem;
+    background-color: var(--main-bg-color);
 }
 
 ul {
@@ -438,6 +442,30 @@ ul {
     border-radius: 1rem;
     color: white;
 }
+
+.project-tab {
+  display: flex;
+  align-items: center;
+  background-color: var(--card-color);
+  border-radius: 1rem;
+  cursor: pointer;
+  color: white;
+  font-weight: 800;
+  border: solid 1px var(--light-bg-color);
+  border-left: solid 6px var(--light-bg-color);
+}
+
+.project-tab:hover {
+  opacity: calc(90%);
+}
+
+.sidebar-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+
 
 /* ------------------------ Main content area styling ----------------------- */
 
