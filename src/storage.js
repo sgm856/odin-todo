@@ -91,7 +91,8 @@ export const getTasks = function() {
 }
 
 export const getStoredActiveProject = function() {
-    let activeProjectId = JSON.parse(localStorage.getItem("active"));
+    console.log(localStorage.getItem("active"));
+    let activeProjectId = localStorage.getItem("active");
     if (activeProjectId) {
         const active = projects.find((proj) => {
             if (proj.id === activeProjectId) {

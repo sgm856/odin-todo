@@ -96,29 +96,22 @@ const addFormButtonHandlers = function(form, closeCallBack, submitCallback) {
 const attachProjectListTabsHandler = function() {
     sidebarView.getProjectListElementContainer().addEventListener("click",
         (e) => {
-            if (e.target.matches("sidebar-project")) {
-                const id = e.target.projectId;
+            if (e.target.matches(".project-tab")) {
+                const id = e.target.dataset.projectId;
                 const project = storage.getProjects().find((proj) => proj.id === id);
                 mainView.renderProject(project);
                 const associatedTasks = storage.getTasks().filter((task) => {
                     task.project === id;
                 });
+                console.log(project);
+                storage.saveActiveProjectId(project.id);
                 mainView.populateProjectWithTasksView(associatedTasks);
             }
-        } 
+        }
     )
 }
 
 /* ------------------- Add Task/Project Callback Functions ------------------ */
-
-const handleProjectClick = function(button) {
-    button.addEventListener('click', (event) => {
-        const id = event.target.projectId;
-        const clickedProj = storage.getProjects().find((proj) => proj.id === id);
-        storage.saveActiveProjectId(clickedProj.id);
-        mainView.renderProject(clickedProj);
-    })
-}
 
 const handleProjectSubmission = function(data) {
     const projectRequest = new Project(data.title, data.description,

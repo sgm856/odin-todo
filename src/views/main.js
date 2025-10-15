@@ -22,6 +22,7 @@ export const populateProjectWithTasksView = function(tasks) {
 }
 
 export const renderProject = function (addedProject) {
+    projectContainer.innerHTML = "";
     projectContainer.setAttribute("data-id", addedProject.id);
 
     const titleNode = document.createElement('h3');
@@ -31,4 +32,9 @@ export const renderProject = function (addedProject) {
 
     projectContainer.appendChild(icon);
     projectContainer.appendChild(titleNode);
+}
+
+export const clearMainDisplay = function() {
+    todoList.innerHTML = "";
+    projectContainer.innerHTML = "";
 }
