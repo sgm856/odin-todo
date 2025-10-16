@@ -1,3 +1,4 @@
+// Projects class
 export class Project {
     static EDITABLE_PROPERTIES = ['title', 'description', 'notes', 'tags'];
     constructor(title, description="", notes="", tags=[], id=null) {

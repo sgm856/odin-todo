@@ -34,3 +34,11 @@ const createFieldElement = function(fieldName, value) {
   return container;
 }
 
+export const createLinkedOptionElement = function(text, id) {
+    const option = document.createElement("option");
+    option.value = id;
+    option.textContent = text;
+    return option;
+    
+}
+

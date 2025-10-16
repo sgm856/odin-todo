@@ -1,10 +1,11 @@
+// Task class
 export class Task {
     static EDITABLE_PROPERTIES = ['project', 'title', 'description', 'dueDate', 'priority', 'checklist', 'notes', 'tags'];
     constructor(title, description="", dueDate="", priority=0, checklist=[], notes="", tags=[], projectId = 0, id=null) {
         this._type = "task";
         this.complete = false;
         this.id = id ?? crypto.randomUUID();
-        this.project = projectId;
+        this.projectId = projectId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
