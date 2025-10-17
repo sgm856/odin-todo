@@ -1,3 +1,4 @@
+//This is intended to only read and save task/project data
 import {Task} from "./models/tasks.js";
 import {Project} from "./models/projects.js";
 
@@ -106,16 +107,5 @@ export const getStoredActiveProject = function() {
         return projects[0];
     }
     return null;
-}
-
-export const getStoredActiveProjectTasks = function() {
-    let tasks = getTasks();
-    let activeTasks = tasks.filter((task) => {
-        if (task.project === getStoredActiveProject()) {
-            return true;
-        }
-        return false;
-    })
-    return activeTasks;
 }
 

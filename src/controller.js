@@ -7,6 +7,7 @@ import * as storage from "./storage.js";
 import * as mainView from "./views/main.js";
 import * as editModalView from "./views/modal.js";
 import * as sidebarView from "./views/sidebar.js";
+import {parseISO} from "date-fns";
 
 let activeProject;
 
@@ -17,6 +18,7 @@ export const initializeApp = function () {
     attachFormButtonHandlers();
     attachProjectListTabsHandler();
     displayActiveProject();
+    sidebarView.renderProjectSidebarView(storage.getProjects());
 }
 
 /* -------------------------- Default Project Setup ------------------------- */
@@ -32,6 +34,7 @@ const displayActiveProject = function() {
     if (storage.getProjects().length === 0) {
         const defProject = createDefaultProject();
         activeProject = defProject;
+        storage.addProject(defProject);
         storage.saveActiveProjectId(defProject.id);
     } else if (!activeProject) {
         activeProject = storage.getStoredActiveProject();
@@ -64,8 +67,10 @@ const attachSidebarHandlers = function() {
             mainView.clearMainContent();
             mainView.setHeader("All Tasks");
             mainView.populateTodoListView(tasks);
+            console.log(tasks);
         }else if (e.target.matches(".calendar-today")) {
             taskDialog.showModal();
+            let tasks = storage.getTasks();
         } else if (e.target.matches(".calendar-week")) {
             taskDialog.showModal();
         } else if (e.target.matches(".calendar-month")) {
@@ -140,6 +145,7 @@ const handleProjectSubmission = function(data) {
     storage.addProject(projectRequest);
     mainView.renderProject(projectRequest);
     sidebarView.renderProjectSidebarView(storage.getProjects());
+    mainView.populateTodoListView(getRelevantTasks(projectRequest.id));
 }
 
 const handleTaskSubmission = function(data) {
@@ -147,20 +153,8 @@ const handleTaskSubmission = function(data) {
     data.description, data.dueDate, data.priority,
     data.checkList, data.notes, data.tags, data.projectId);
     storage.addTask(taskRequest);
-}
-
-/* ------------------------- Active Project Methods ------------------------- */
-
-const setActiveProject = function(project) {
-    activeProject = project;
-    storage.saveActiveProjectId(project);
-}
-
-const getActiveProject = function() {
-    if (activeProject == null || activeProject == undefined) {
-        return storage.getStoredActiveProject();
-    } 
-    return activeProject;
+    mainView.renderProject(getProject(data.projectId));
+    mainView.populateTodoListView(getRelevantTasks(data.projectId));
 }
 
 /* ---------------------------------- Misc ---------------------------------- */
@@ -171,4 +165,8 @@ const getRelevantTasks = function(projectId) {
         return task.projectId === projectId;})
 
     return associatedTasks;
+}
+
+const getProject = function(id) {
+    return storage.getProjects().find((proj) => proj.id === id);
 }
