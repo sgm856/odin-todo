@@ -453,6 +453,7 @@ ul {
   font-weight: 800;
   border: solid 1px var(--light-bg-color);
   border-left: solid 6px var(--light-bg-color);
+  max-height: 15%;
 }
 
 .project-tab:hover,
@@ -462,8 +463,12 @@ ul {
 
 .sidebar-project-list {
   display: flex;
+  height: 100%;
+  flex: initial;
   flex-direction: column;
   gap: 0.3rem;
+  max-height: 37vh;
+  overflow:scroll;
 }
 
 /* ------------------------ Main content area styling ----------------------- */
