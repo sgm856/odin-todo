@@ -59,7 +59,12 @@ const attachSidebarHandlers = function() {
                 projectSelector.appendChild(option);
             })
             taskDialog.showModal();
-        } else if (e.target.matches(".calendar-today")) {
+        } else if (e.target.matches(".view-all")) {
+            const tasks = storage.getTasks();
+            mainView.clearMainContent();
+            mainView.setHeader("All Tasks");
+            mainView.populateTodoListView(tasks);
+        }else if (e.target.matches(".calendar-today")) {
             taskDialog.showModal();
         } else if (e.target.matches(".calendar-week")) {
             taskDialog.showModal();

@@ -353,10 +353,10 @@ template {
 /* -------------------------------------------------------------------------- */
 
 :root {
-    --main-bg-color: #003C43;
-    --card-color: #135D66;
-    --light-bg-color: #77B0AA;
-    --light-color: #E3FEF7;
+    --main-bg-color: #fffef6;
+    --card-color: #4682A9;
+    --light-bg-color: #FFFF;
+    --light-color: #91C8E4;
 }
 
 html {
@@ -455,8 +455,9 @@ ul {
   border-left: solid 6px var(--light-bg-color);
 }
 
-.project-tab:hover {
-  opacity: calc(90%);
+.project-tab:hover,
+.sidebar-util:hover {
+  filter:brightness(0.85);
 }
 
 .sidebar-project-list {
@@ -468,9 +469,11 @@ ul {
 /* ------------------------ Main content area styling ----------------------- */
 
 .main-content {
-    grid-area: content;
-    background-color: var(--main-bg-color);;
-    padding: 2rem;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  grid-area: content;
+  padding: 2rem;
 }
 
 .project-container {
@@ -481,11 +484,71 @@ ul {
   justify-content: center;
 }
 
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 50%;
+  margin-top: 1rem;
+}
+
 .task {
   display: flex;
-  background-color: var(--main-bg-color);
-  color: white;
+  flex: 1;
+  background-color: var(--light-color);
+  border-left: solid 4px var(--card-color);
+  border-top: solid 4px var(--card-color);
+  color: black;
+  align-items: center;
+  border-radius: 1rem;
+  cursor: pointer;
+  gap: 1rem;
+  justify-content: space-between;
+  box-shadow: 1rem 0.5rem 1rem 0 gray;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.task-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.task-info svg {
+
+}
+
+.task-utils {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.task:hover {
+  filter: brightness(0.85);
+}
+
+svg .icon-circle-with-check {
+  width: 50px;
+  height: 50px
+}
+
+.inner-check {
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.icon-circle-with-check:hover .inner-check {
+  opacity: 1;
+}
+
 
 /* ----------------------------- Footer styling ----------------------------- */
 
@@ -500,6 +563,9 @@ footer {
 /* ------------------------------ Miscellaneous ----------------------------- */
 
 .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
     height: 1.5rem;
     width: 1.5rem;
     flex-shrink: 0;
