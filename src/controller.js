@@ -192,7 +192,8 @@ const handleTaskSubmission = function(data) {
 const attachTaskButtonHandler = function() {
     const todoList = document.querySelector(".todo-list");
     todoList.addEventListener('click', (e) => {
-        if (e.target.matches(".todo-complete-button") || e.target.matches(".icon-circle-with-check")) {
+        if (e.target.closest(".todo-complete-button")
+            || e.target.closest(".todo-trash-button")) {
             const entireTask = e.target.closest("li.task");
             const taskId = entireTask.dataset.id;
             const projectId = entireTask.dataset.projectId;
