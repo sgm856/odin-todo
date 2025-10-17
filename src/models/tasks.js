@@ -18,7 +18,7 @@ export class Task {
     updateTask(updates) {
         for (const key in updates) {
             if (EDITABLE_PROPERTIES.includes(key)) {
-                todos[id][key] = updates[key];
+                this.key = updates[key];
             }
         }
     }

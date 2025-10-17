@@ -7,7 +7,7 @@ import * as storage from "./storage.js";
 import * as mainView from "./views/main.js";
 import * as editModalView from "./views/modal.js";
 import * as sidebarView from "./views/sidebar.js";
-import {parseISO} from "date-fns";
+import {parse, add, format, isBefore, compareAsc, compareDsc, differenceInDays} from "date-fns";
 
 let activeProject;
 
@@ -17,6 +17,7 @@ export const initializeApp = function () {
     attachSidebarHandlers();
     attachFormButtonHandlers();
     attachProjectListTabsHandler();
+    attachTaskButtonHandler();
     displayActiveProject();
     sidebarView.renderProjectSidebarView(storage.getProjects());
 }
@@ -41,7 +42,7 @@ const displayActiveProject = function() {
     }
     sidebarView.renderProjectSidebarView(storage.getProjects());
     mainView.renderProject(activeProject);
-    mainView.populateTodoListView(getRelevantTasks(activeProject.id));
+    mainView.populateTodoListView(getRelevantTasksByProjId(activeProject.id));
 }
 
 /* ----------------------- Sidebar EventHandler Setup ----------------------- */
@@ -61,6 +62,8 @@ const attachSidebarHandlers = function() {
                 const option = editModalView.createLinkedOptionElement(project.title, project.id);
                 projectSelector.appendChild(option);
             })
+            const dateElement = taskDialog.querySelector("input#date");
+            dateElement.valueAsDate = new Date();
             taskDialog.showModal();
         } else if (e.target.matches(".view-all")) {
             const tasks = storage.getTasks();
@@ -69,12 +72,38 @@ const attachSidebarHandlers = function() {
             mainView.populateTodoListView(tasks);
             console.log(tasks);
         }else if (e.target.matches(".calendar-today")) {
-            taskDialog.showModal();
+            mainView.clearMainContent();
+            mainView.setHeader("Today's Tasks");
             let tasks = storage.getTasks();
+            const today = new Date();
+            const formattedTodayDate = format(today, "yyyy-MM-dd");
+            tasks = tasks.filter((task) => {
+                const parsedDate = format(parse(task.dueDate, "yyyy-MM-dd", formattedTodayDate), "yyyy-MM-dd");
+                return parsedDate === formattedTodayDate;
+            })
+            mainView.populateTodoListView(tasks);
         } else if (e.target.matches(".calendar-week")) {
-            taskDialog.showModal();
+            mainView.clearMainContent();
+            mainView.setHeader("Next 7 Days");
+            let tasks = storage.getTasks();
+            const today = new Date();
+            const weekFromNow = add(today, {days:7});
+            tasks = tasks.filter((task) => {
+                const parsedDate = parse(task.dueDate, "yyyy-MM-dd", today);
+                return isBefore(parsedDate, weekFromNow);
+            })
+            mainView.populateTodoListView(tasks);
         } else if (e.target.matches(".calendar-month")) {
-            taskDialog.showModal();
+            mainView.clearMainContent();
+            mainView.setHeader("Next 30 Days");
+            let tasks = storage.getTasks();
+            const today = new Date();
+            const monthFromNow = add(today, {days:30});
+            tasks = tasks.filter((task) => {
+                const parsedDate = parse(task.dueDate, "yyyy-MM-dd", today);
+                return isBefore(parsedDate, monthFromNow);
+            })
+            mainView.populateTodoListView(tasks);
         }
     })
 
@@ -130,7 +159,7 @@ const attachProjectListTabsHandler = function() {
                 const project = storage.getProjects().find((proj) => proj.id === id);
                 mainView.renderProject(project);
                 storage.saveActiveProjectId(project.id);
-                mainView.populateTodoListView(getRelevantTasks(project.id));
+                mainView.populateTodoListView(getRelevantTasksByProjId(project.id));
             }
         }
     )
@@ -145,7 +174,7 @@ const handleProjectSubmission = function(data) {
     storage.addProject(projectRequest);
     mainView.renderProject(projectRequest);
     sidebarView.renderProjectSidebarView(storage.getProjects());
-    mainView.populateTodoListView(getRelevantTasks(projectRequest.id));
+    mainView.populateTodoListView(getRelevantTasksByProjId(projectRequest.id));
 }
 
 const handleTaskSubmission = function(data) {
@@ -153,13 +182,30 @@ const handleTaskSubmission = function(data) {
     data.description, data.dueDate, data.priority,
     data.checkList, data.notes, data.tags, data.projectId);
     storage.addTask(taskRequest);
-    mainView.renderProject(getProject(data.projectId));
-    mainView.populateTodoListView(getRelevantTasks(data.projectId));
+    mainView.renderProject(getProjectById(data.projectId));
+    mainView.populateTodoListView(getRelevantTasksByProjId(data.projectId));
+    console.log(data.dueDate);
+}
+
+/* ---------------------- Handle Todo List Task Buttons --------------------- */
+
+const attachTaskButtonHandler = function() {
+    const todoList = document.querySelector(".todo-list");
+    todoList.addEventListener('click', (e) => {
+        if (e.target.matches(".todo-complete-button") || e.target.matches(".icon-circle-with-check")) {
+            const entireTask = e.target.closest("li.task");
+            const taskId = entireTask.dataset.id;
+            const projectId = entireTask.dataset.projectId;
+            storage.removeTask(taskId);
+            entireTask.remove();
+            mainView.populateTodoListView(getRelevantTasksByProjId(projectId));
+        }
+    });
 }
 
 /* ---------------------------------- Misc ---------------------------------- */
 
-const getRelevantTasks = function(projectId) {
+const getRelevantTasksByProjId = function(projectId) {
     const associatedTasks = storage.getTasks().filter(
         (task) => {
         return task.projectId === projectId;})
@@ -167,6 +213,6 @@ const getRelevantTasks = function(projectId) {
     return associatedTasks;
 }
 
-const getProject = function(id) {
+const getProjectById = function(id) {
     return storage.getProjects().find((proj) => proj.id === id);
 }

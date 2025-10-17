@@ -10,10 +10,10 @@ export class Project {
         this.tags = tags;
     }
 
-    updateProject(id, updates) {
+    updateProject(updates) {
         for (const key in updates) {
             if (PROJECT_PROPERTIES.includes(key)) {
-                projects[id][key] = updates[key];
+                this.key = updates[key];
             }
         }
     }

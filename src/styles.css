@@ -473,7 +473,7 @@ ul {
   width: 100%;
   flex-direction: column;
   grid-area: content;
-  padding: 2rem;
+  padding-bottom: 2rem;
 }
 
 .project-container {
@@ -501,7 +501,6 @@ ul {
   color: black;
   align-items: center;
   border-radius: 1rem;
-  cursor: pointer;
   gap: 1rem;
   justify-content: space-between;
   box-shadow: 1rem 0.5rem 1rem 0 gray;
@@ -521,10 +520,6 @@ ul {
   gap: 1rem;
 }
 
-.task-info svg {
-
-}
-
 .task-utils {
   display: flex;
   align-items: center;
@@ -532,21 +527,22 @@ ul {
 }
 
 .task:hover {
-  filter: brightness(0.85);
-}
-
-svg .icon-circle-with-check {
-  width: 50px;
-  height: 50px
+  filter: brightness(0.98);
 }
 
 .inner-check {
   opacity: 0;
-  transition: opacity 0.1s;
+  transition: opacity 0.05s;
 }
 
 .icon-circle-with-check:hover .inner-check {
   opacity: 1;
+}
+
+.todo-task-button {
+  background-color: var(--card-color);
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 

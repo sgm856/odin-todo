@@ -70,7 +70,7 @@ export const saveActiveProjectId = function(activeProjectId) {
 export const getProjects = function() {
     let projectInformation = JSON.parse(localStorage.getItem("projects"));
     if (projectInformation) {
-        projectInformation = projectInformation.map((project) => {
+        projectInformation = projectInformation.filter(proj => proj !== null).map((project) => {
             return Project.projectFromJSON(project);
         });
         projects = projectInformation;
@@ -83,7 +83,7 @@ export const getTasks = function() {
     let taskInformation = JSON.parse(localStorage.getItem("tasks"));
     /* Turn them into task objects */
     if (taskInformation) {
-        taskInformation = taskInformation.map((task) => {
+        taskInformation = taskInformation.filter(task => task !== null).map((task) => {
             return Task.taskFromJSON(task);
         });
         tasks = taskInformation;
@@ -107,5 +107,22 @@ export const getStoredActiveProject = function() {
         return projects[0];
     }
     return null;
+}
+
+export const removeProject = function(projectId) {
+    const projIndex = projects.findIndex(proj => proj.id === projectId);
+    if (projIndex >= 0) {
+        projects.splice(projIndex, 1);
+    }
+    storeProjects();
+}
+
+export const removeTask = function(taskId) {
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+    if (taskIndex >= 0) {
+        tasks.splice(taskIndex, 1);
+    }
+    storeTasks();
+    console.log(tasks);
 }
 
