@@ -1,7 +1,7 @@
 export const projectCreationDialog = document.querySelector("#project-dialog");
 export const taskCreationDialog = document.querySelector("#task-dialog");
 export const projectCreationForm = document.querySelector("#project-dialog form");
-export const taskCreationForm = document.querySelector("task-creation-dialog form");
+export const taskCreationForm = document.querySelector("#task-dialog form");
 
 // export const showEditModal = function(item, editableFields) {
 //     const modal = document.querySelector('#edit-modal');

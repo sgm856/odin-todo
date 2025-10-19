@@ -173,6 +173,30 @@ const attachProjectListTabsHandler = function() {
     )
 }
 
+/* ---------------------- Handle Todo List Task Buttons --------------------- */
+
+const attachTaskButtonHandler = function() {
+    const todoList = document.querySelector(".todo-list");
+    todoList.addEventListener('click', (e) => {
+        if (e.target.closest(".todo-complete-button")
+            || e.target.closest(".todo-trash-button")) {
+            const entireTaskElement = e.target.closest("li.task");
+            const taskId = entireTaskElement.dataset.id;
+            const projectId = entireTaskElement.dataset.projectId;
+            storage.removeTask(taskId);
+            entireTaskElement.remove();
+            mainView.populateTodoListView(getRelevantTasksByProjId(projectId));
+        } else if (e.target.closest(".todo-edit-button")) {
+            const taskId = e.target.closest(".task").dataset.id;
+            editModalView.fillFormUsingObjectProperties(editModalView.taskCreationForm,
+                getTaskById(taskId));
+
+            editModalView.taskCreationForm.dataset.id = taskId;
+            editModalView.taskCreationDialog.showModal();
+        }
+    });
+}
+
 /* ------------------- Add Task/Project Callback Functions ------------------ */
 
 //Pretty self-explanatory, but creates and saves projects, renders if necessary
@@ -196,7 +220,7 @@ const handleProjectSubmission = function(data) {
 }
 
 const handleTaskSubmission = function(data) {
-    const taskId = editModalView.taskCreationForm.dataset.taskId;
+    const taskId = editModalView.taskCreationForm.dataset.id;
     if (!taskId) {
     const taskRequest = new Task(data.title,
     data.description, data.dueDate, data.priority,
@@ -208,32 +232,10 @@ const handleTaskSubmission = function(data) {
         const task = getTaskById(taskId);
         task.updateTask(data);
         storage.updateTask(task);
-        mainView.populateTodoListView(getRelevantTasksByProjId(data.projectId));
+        mainView.populateTodoListView(getRelevantTasksByProjId(task.projectId));
     }
 
     editModalView.taskCreationForm.dataset.taskId = "";
-}
-
-/* ---------------------- Handle Todo List Task Buttons --------------------- */
-
-const attachTaskButtonHandler = function() {
-    const todoList = document.querySelector(".todo-list");
-    todoList.addEventListener('click', (e) => {
-        if (e.target.closest(".todo-complete-button")
-            || e.target.closest(".todo-trash-button")) {
-            const entireTaskElement = e.target.closest("li.task");
-            const taskId = entireTaskElement.dataset.id;
-            const projectId = entireTaskElement.dataset.projectId;
-            storage.removeTask(taskId);
-            entireTaskElement.remove();
-            mainView.populateTodoListView(getRelevantTasksByProjId(projectId));
-        } else if (e.target.closest(".todo-edit-button")) {
-            const entireTaskElement = e.target.closest("li.task");
-            const taskId = entireTaskElement.dataset.id;
-            const actualTask = getTaskById(taskId);
-            const taskDialog = document.querySelector("#task-dialog");
-        }
-    });
 }
 
 /* ---------------------------------- Misc ---------------------------------- */
