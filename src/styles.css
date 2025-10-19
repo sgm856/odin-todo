@@ -385,6 +385,7 @@ html {
     align-items: center;
     padding: 0;
     margin: 0;
+    min-width: 15vw;
 }
 
 .sidebar-header {
@@ -412,6 +413,7 @@ html {
 
 .sidebar-top {
   padding-bottom: 3rem;
+  width: 100%;
 }
 
 .sidebar-projects-container {
