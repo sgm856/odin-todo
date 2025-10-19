@@ -49,6 +49,18 @@ export const addProject = function(project) {
     storeProjects();
 }
 
+export const updateTask = function(task) {
+    const index = tasks.findIndex((t) => t.id === task.id);
+    tasks[index] = task;
+    storeTasks();
+}
+
+export const updateProject = function(project) {
+    const index = projects.findIndex((p) => p.id === project.id);
+    projects[index] = project;
+    storeProjects();
+}
+
 const storeTasks = function() {
     if (storageAvailable) {
         localStorage.setItem("tasks", JSON.stringify(tasks));

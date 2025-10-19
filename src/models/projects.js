@@ -11,9 +11,10 @@ export class Project {
     }
 
     updateProject(updates) {
+        console.log(updates);
         for (const key in updates) {
-            if (PROJECT_PROPERTIES.includes(key)) {
-                this.key = updates[key];
+            if (Project.EDITABLE_PROPERTIES.includes(key)) {
+                this[key] = updates[key];
             }
         }
     }

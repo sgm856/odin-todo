@@ -453,7 +453,20 @@ ul {
   font-weight: 800;
   border: solid 1px var(--light-bg-color);
   border-left: solid 6px var(--light-bg-color);
-  max-height: 15%;
+  max-height: 10vh;
+  justify-content: space-between;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.project-tab-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project-tab-left svg {
+  fill: white;
 }
 
 .project-tab:hover,
@@ -544,7 +557,7 @@ ul {
   opacity: 1;
 }
 
-.todo-task-button {
+.todo-button {
   background-color: var(--card-color);
   border-radius: 0.5rem;
   cursor: pointer;

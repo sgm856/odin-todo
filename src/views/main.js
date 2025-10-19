@@ -15,7 +15,7 @@ const renderTask = function (addedTask) {
 
     const circleCheckButton = document.createElement("button");
     circleCheckButton.classList.add("icon-circle-with-check");
-    circleCheckButton.classList.add("todo-task-button");
+    circleCheckButton.classList.add("todo-button");
     circleCheckButton.classList.add("todo-complete-button");
     circleCheckButton.innerHTML = `<svg class="icon icon-circle-with-check" viewBox="0 0 32 32" width="100%" height="100%">
         <path d="M16 26.667c-5.891 0-10.667-4.776-10.667-10.667v0c0-5.891 4.776-10.667 10.667-10.667v0c5.891 0 10.667 4.776 10.667 10.667v0c0 5.891-4.776 10.667-10.667 10.667v0zM16 2.667c-7.364 0-13.333 5.97-13.333 13.333v0c0 7.364 5.97 13.333 13.333 13.333v0c7.364 0 13.333-5.97 13.333-13.333v0c0-7.364-5.97-13.333-13.333-13.333v0z"></path>
@@ -32,16 +32,20 @@ const renderTask = function (addedTask) {
     const editButton = document.createElement("button");
     const trashButton = document.createElement("button");
 
-    editButton.classList.add("todo-task-button");
+    editButton.classList.add("todo-button");
     editButton.classList.add("todo-edit-button");
-    trashButton.classList.add("todo-task-button");
+    trashButton.classList.add("todo-button");
     trashButton.classList.add("todo-trash-button");
     const editSvg = createIcon("pencil");
     const trashSvg = createIcon("trash-can-outline");
+    const dueDate = document.createElement('p');
+    dueDate.classList.add("due-date");
+    dueDate.textContent = addedTask.dueDate;
 
     editButton.appendChild(editSvg);
     trashButton.appendChild(trashSvg);
 
+    rightSide.appendChild(dueDate);
     rightSide.appendChild(editButton);
     rightSide.appendChild(trashButton);
     rightSide.classList.add("task-utils");

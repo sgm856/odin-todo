@@ -161,6 +161,14 @@ const attachProjectListTabsHandler = function() {
                 storage.saveActiveProjectId(project.id);
                 mainView.populateTodoListView(getRelevantTasksByProjId(project.id));
             }
+            else if (e.target.closest(".project-tab-edit-button")) {
+                const projectId = e.target.closest(".project-tab").dataset.projectId;
+                editModalView.fillFormUsingObjectProperties(editModalView.projectCreationForm,
+                    getProjectById(projectId));
+
+                editModalView.projectCreationForm.dataset.projectId = projectId;
+                editModalView.projectCreationDialog.showModal();
+            }
         }
     )
 }
@@ -169,22 +177,41 @@ const attachProjectListTabsHandler = function() {
 
 //Pretty self-explanatory, but creates and saves projects, renders if necessary
 const handleProjectSubmission = function(data) {
+    const projectId = editModalView.projectCreationForm.dataset.projectId;
+    if (!projectId) {
     const projectRequest = new Project(data.title, data.description,
         data.notes, data.tags);
     storage.addProject(projectRequest);
     mainView.renderProject(projectRequest);
     sidebarView.renderProjectSidebarView(storage.getProjects());
     mainView.populateTodoListView(getRelevantTasksByProjId(projectRequest.id));
+    } else {
+        const project = getProjectById(projectId);
+        project.updateProject(data);
+        storage.updateProject(project);
+        sidebarView.renderProjectSidebarView(storage.getProjects());
+    }
+
+    editModalView.projectCreationForm.dataset.projectId = "";
 }
 
 const handleTaskSubmission = function(data) {
+    const taskId = editModalView.taskCreationForm.dataset.taskId;
+    if (!taskId) {
     const taskRequest = new Task(data.title,
     data.description, data.dueDate, data.priority,
     data.checkList, data.notes, data.tags, data.projectId);
     storage.addTask(taskRequest);
     mainView.renderProject(getProjectById(data.projectId));
     mainView.populateTodoListView(getRelevantTasksByProjId(data.projectId));
-    console.log(data.dueDate);
+    } else {
+        const task = getTaskById(taskId);
+        task.updateTask(data);
+        storage.updateTask(task);
+        mainView.populateTodoListView(getRelevantTasksByProjId(data.projectId));
+    }
+
+    editModalView.taskCreationForm.dataset.taskId = "";
 }
 
 /* ---------------------- Handle Todo List Task Buttons --------------------- */
@@ -194,12 +221,17 @@ const attachTaskButtonHandler = function() {
     todoList.addEventListener('click', (e) => {
         if (e.target.closest(".todo-complete-button")
             || e.target.closest(".todo-trash-button")) {
-            const entireTask = e.target.closest("li.task");
-            const taskId = entireTask.dataset.id;
-            const projectId = entireTask.dataset.projectId;
+            const entireTaskElement = e.target.closest("li.task");
+            const taskId = entireTaskElement.dataset.id;
+            const projectId = entireTaskElement.dataset.projectId;
             storage.removeTask(taskId);
-            entireTask.remove();
+            entireTaskElement.remove();
             mainView.populateTodoListView(getRelevantTasksByProjId(projectId));
+        } else if (e.target.closest(".todo-edit-button")) {
+            const entireTaskElement = e.target.closest("li.task");
+            const taskId = entireTaskElement.dataset.id;
+            const actualTask = getTaskById(taskId);
+            const taskDialog = document.querySelector("#task-dialog");
         }
     });
 }
@@ -216,4 +248,8 @@ const getRelevantTasksByProjId = function(projectId) {
 
 const getProjectById = function(id) {
     return storage.getProjects().find((proj) => proj.id === id);
+}
+
+const getTaskById = function(taskId) {
+    return storage.getTasks().find((task) => task.id === taskId);
 }

@@ -17,7 +17,8 @@ export class Task {
 
     updateTask(updates) {
         for (const key in updates) {
-            if (EDITABLE_PROPERTIES.includes(key)) {
+            console.log(updates);
+            if (Task.EDITABLE_PROPERTIES.includes(key)) {
                 this.key = updates[key];
             }
         }

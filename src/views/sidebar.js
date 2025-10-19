@@ -8,13 +8,29 @@ export const renderProjectSidebarView = (projects) => {
         const tabContainer = document.createElement('li');
         tabContainer.dataset.projectId = proj.id;
         tabContainer.classList.add("project-tab");
-        const icon = createIcon("icon-circle-outline");
+        const icon = createIcon("format-list-checkbox");
 
         const titleNode = document.createElement('h3');
         titleNode.textContent = proj.title;
-        tabContainer.appendChild(icon);
-        tabContainer.appendChild(titleNode);
 
+        const leftSide = document.createElement("div");
+        leftSide.appendChild(icon);
+        leftSide.appendChild(titleNode);
+        leftSide.classList.add("project-tab-left");
+
+        const rightSide = document.createElement("div");
+        const button = document.createElement("button");
+        button.classList.add("todo-button");
+        button.classList.add("project-tab-edit-button");
+
+        const editIcon = createIcon("pencil");
+        button.appendChild(editIcon);
+        rightSide.appendChild(button);
+        rightSide.classList.add("project-tab-right");
+
+        tabContainer.appendChild(leftSide);
+        tabContainer.appendChild(rightSide);
+        
         sidebarList.appendChild(tabContainer);
     });
 };
